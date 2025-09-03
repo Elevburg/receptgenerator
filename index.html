@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Receptgenerator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      max-width: 600px;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #f4f4f4;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍳 AI Receptgenerator</h1>
+  <p>Voer de ingrediënten in die je thuis hebt:</p>
+  <textarea id="ingredients" placeholder="bijv. rijst, spinazie, knoflook"></textarea>
+  <br>
+  <button onclick="generateRecipe()">Genereer recept</button>
+  <div id="output"></div>
+
+  <script type="module">
+    import OpenAI from "https://cdn.jsdelivr.net/npm/openai@4.0.0/dist/openai.min.js";
+
+    const client = new OpenAI({
+      apiKey: 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
+      dangerouslyAllowBrowser: true // normaal niet aanbevolen, maar prima voor demo
+    });
+
+    async function generateRecipe() {
+      const ingredients = document.getElementById("ingredients").value;
+      const outputDiv = document.getElementById("output");
+      outputDiv.textContent = "Even geduld... 🧑‍🍳";
+
+      try {
+        const response = await client.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [
+            { role: "system", content: "Jij bent een chefkok die creatieve recepten bedenkt." },
+            { role: "user", content: `Maak een lekker recept met deze ingrediënten: ${ingredients}` }
+          ],
+          max_tokens: 400
+        });
+
+        outputDiv.textContent = response.choices[0].message.content;
+      } catch (err) {
+        outputDiv.textContent = "Er ging iets mis: " + err.message;
+      }
+    }
+
+    window.generateRecipe = generateRecipe;
+  </script>
+</body>
+</html>
