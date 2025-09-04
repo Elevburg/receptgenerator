@@ -25,7 +25,7 @@
       outputDiv.textContent = "Even geduld... 🧑‍🍳";
 
       try {
-        const res = await fetch("http://receptgenerator.onrender.com/recipe", {   // 👈 dit pas je straks aan naar je Render-URL
+        const res = await fetch("http://receptgenerator.onrender.com/recipe", {   // 
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ingredients })
@@ -44,4 +44,5 @@
   </script>
 </body>
 </html>
+
 
